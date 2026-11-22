@@ -1,4 +1,4 @@
-import React, { StrictMode, useState } from "react";
+import React, { StrictMode, useState, useCallback } from "react";
 import { Routes, Route, NavLink } from "react-router-dom";
 import "bootstrap/dist/css/bootstrap.min.css";
 import AddReview from "./components/addReview";
@@ -14,6 +14,9 @@ import NavDropdown from 'react-bootstrap/NavDropdown';
 
 const App = () => {
   const [user, setUser] = useState(null);
+  const loginSetter = useCallback(user => {
+    setUser(user);
+  }, [setUser]);
 
   async function login(user = null) {
     setUser(user);
@@ -45,7 +48,7 @@ const App = () => {
           path="/movies/:id/review"
           element={<AddReview user={user} />}
         ></Route>
-        <Route path="/login" element={<Login login={login} />}></Route>
+        <Route path="/login" element={<Login user={user} loginSetter={loginSetter} />}></Route>
       </Routes>
     </div>
   );
